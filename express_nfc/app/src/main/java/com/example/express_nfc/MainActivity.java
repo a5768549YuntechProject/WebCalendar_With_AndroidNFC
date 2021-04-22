@@ -8,8 +8,15 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +67,27 @@ public class MainActivity extends AppCompatActivity {
         }
         mIntentFilters = new IntentFilter[]{filter};
         mTechList = new String[][]{new String[]{MifareClassic.class.getName()}}; // 只處理 MifareClassic 的 tag
+
+        buttonGetLast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://192.168.0.120:3000/nfc/list";  // Request a string response
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) { // Result handling
+                                responseView.setText(response);
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {// Error handling
+                        responseView.setText("Something went wrong!");
+                        error.printStackTrace();
+                    }
+                });// Add the request to the queue
+                Volley.newRequestQueue(this).add(stringRequest);
+            } //onClick(View v)
+        }); // buttonGetLast.setOnClickListener(…)
     }
 
     protected void onResume() {
