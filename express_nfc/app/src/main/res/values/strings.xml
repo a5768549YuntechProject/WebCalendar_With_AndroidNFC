@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">express_nfc</string>
+    <string name="tagid_text">TagID:</string>
+    <string name="tag_value">00000000</string>
+    <string name="tag_response_value">No tag yet</string>
+    <string name="button1_text">POST TAG WITH ID</string>
+    <string name="button2_text">GET TAG WITH ID</string>
+    <string name="button3_text">GET LAST UPLOADED TAG</string>
+    <string name="button4_text">DELETE</string>
+</resources>
