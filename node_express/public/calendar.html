@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-route="/calendar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="./css/index.css" data-static>
+    <link rel="stylesheet" href="./css/calendar.css">
+
+    <script src="./js/static-csr.js" data-static></script>
+    <script src="./js/index.js" data-static></script>
+</head>
+
+<body>
+    <div class="card">
+        <h1 id="calendar_header"></h1>
+        <div class="placeholder">
+            <button>&#060;</button>
+            <button>&#062;</button>
+            <h4 id="previous" onclick="previous()"><span>&#060;</span></h4>
+            
+            <h4 id="next" onclick="next()"><span>&#062;</span></h4>
+        </div>
+        <table id="tabapay_calendar" cellspacing="0" cellpadding="1" style="width:30%">
+            <thead id="calendar_head">
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody id="calendar_body">
+            </tbody>
+        </table>
+
+        <script src="./js/calendar.js"></script>
+</body>
+
+</html>
