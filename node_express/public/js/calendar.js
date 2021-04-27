@@ -246,8 +246,6 @@ function renderTodayTable(date, event) {
  * @param {number} year
  */
 function showCalendar(month, year) {
-    document.getElementById("previous").style.color = "white";
-    document.getElementById("next").style.color = "white";
 
     let daysInMonth = 32 - new Date(year, month, 32).getDate();
     let firstDayOfWeek = new Date(year, month).getDay();

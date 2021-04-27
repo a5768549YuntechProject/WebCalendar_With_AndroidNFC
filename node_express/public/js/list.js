@@ -24,19 +24,19 @@ function renderTable(data) {
     let cardTd = document.createElement("td");
     let dateTd = document.createElement("td");
     let timesTd = document.createElement("td");
-    let totalTd = document.createElement("td");
+    //let totalTd = document.createElement("td");
 
     idTd.append(data["id"]);
     cardTd.append(data["cardID"]);
     dateTd.append(formatSQLDateTimeAndTimeZone(data["Date"]));
     timesTd.append(data["times"]);
-    totalTd.append(data["TotallyCount"]);
+    //totalTd.append(data["TotallyCount"]);
 
     mainTr.append(idTd);
     mainTr.append(cardTd);
     mainTr.append(dateTd);
     mainTr.append(timesTd);
-    mainTr.append(totalTd);
+    //mainTr.append(totalTd);
 
     eventTable.append(mainTr);
 }

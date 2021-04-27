@@ -1,7 +1,7 @@
 const sql = /** @type {any} */ (require("sql-template-strings"));
 const { query } = require("../../utils/mysql");
 
-const insertStatement =  sql`SELECT * FROM my_tag ORDER BY id DESC`;
+const insertStatement =  sql`SELECT * FROM my_tag`;
 
 /**
  * 取得清單

@@ -3,9 +3,7 @@ const rejectOnInvalid = require('../../middlewares/rejectOnInvalid');
 
 //TODO:express-validator沒有驗datetime的功能，之後記得用regex做
 const validateScheduleAdd = [
-    body('start_date'),
-    body('end_date'),
-    body('event').escape().trim().not().isEmpty(),
+    body('cardID').escape().trim().not().isEmpty(),
     rejectOnInvalid,
 ];
 

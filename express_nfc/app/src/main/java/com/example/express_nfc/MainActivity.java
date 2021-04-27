@@ -12,6 +12,7 @@ import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public final String ip = "http://127.0.0.1:3000/";
-    public final String listIp = "https://google.com";
-    public final String calendarIp = "https://google.com";
+    public final String ip = "http://192.168.43.254:3000/api/";
+    public final String listIp = "http://192.168.43.254:3000/list";
+    public final String calendarIp = "http://192.168.43.254:3000/calendar";
 
     private void initViews() {
         labelID = findViewById(R.id.textView);
@@ -70,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
         listWebView.setWebViewClient(new WebViewClient());
         listWebView.loadUrl(listIp);
         calendarWebView.loadUrl(calendarIp);
+        WebSettings listwebSettings = listWebView.getSettings();
+        listwebSettings.setJavaScriptEnabled(true);
+
+        WebSettings calendarwebSettings = calendarWebView.getSettings();
+        calendarwebSettings.setJavaScriptEnabled(true);
     }
 
     public boolean scannedTag(String tag){
@@ -135,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 String url = ip + "schedules";  // Request a string response
 
                 Map<String, String> map = new HashMap<>();
-                map.put("tagid", idView.getText().toString());
+                map.put("cardID", idView.getText().toString());
 
                 JSONObject postData = new JSONObject(map);
 
@@ -153,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 queue.add(jsonObjectRequest);
+                reflashList(listIp);
+                reflashCalendar(calendarIp);
             } //onClick(View v)
         }); // buttonGetLast.setOnClickListener(…)
 
@@ -174,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });// Add the request to the queue
                 Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+
+                reflashList(listIp);
+                reflashCalendar(calendarIp);
             } //onClick(View v)
         }); // buttonGetLast.setOnClickListener(…)
 
@@ -201,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = ip + "schedules/last";  // Request a string response
+                String url = ip + "schedules";  // Request a string response
                 StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                         new Response.Listener<String>() {
                             @Override
@@ -216,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });// Add the request to the queue
                 Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+                reflashList(listIp);
+                reflashCalendar(calendarIp);
             } //onClick(View v)
         }); // buttonGetLast.setOnClickListener(…)
     }

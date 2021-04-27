@@ -2,7 +2,9 @@ const sql = /** @type {any} */ (require("sql-template-strings"));
 const { query } = require("../../utils/mysql");
 
 const insertStatement = (body) =>
-    sql`SELECT * FROM my_schedule Where id = ${body.id}`;
+    sql`SELECT * FROM my_tag
+    ORDER BY id DESC LIMIT 0 , 1
+    `;
 
 /**
  * 取得清單
