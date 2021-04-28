@@ -135,35 +135,11 @@ function plusDate(data) {
 }
 
 /**
- * 取得資料庫的資料更改格式為YYYY-MM-DDThh:mm:ss.000Z和更改時區
- * @param {String} date
- * @returns YYYY-MM-DDThh:mm:ss.000Z
- */
-function formatDateToString(date) {
-    var d1 = new Date(date);
-    d1.setTime(d1.getTime() + 480 * 60 * 1000);
-    let _year = d1.getFullYear().toString();
-    let _month = (d1.getMonth() + 1).toString();
-    let _day = d1.getDate().toString();
-    let _hour = d1.getHours().toString();
-    let _min = d1.getMinutes().toString();
-    let _sec = d1.getSeconds().toString();
-    if (_month.length === 1) _month = "0" + _month;
-    if (_day.length === 1) _day = "0" + _day;
-    if (_hour.length === 1) _hour = "0" + _hour;
-    if (_min.length === 1) _min = "0" + _min;
-    if (_sec.length === 1) _sec = "0" + _sec;
-
-    return _year + "-" + _month + "-" + _day + "T" + _hour + ":" + _min + ":" + _sec + ".000Z";
-}
-
-/**
  * 列出時間事件清單並儲存於全域變數內
  * @param {String[]} data
  */
 function listEvent(data) {
     data.forEach((element) => {
-        element["Date"] = formatDateToString(element["Date"]);
         list.push(element["Date"] + "#" + element["cardID"]);
     });
     console.log(list);

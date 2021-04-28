@@ -1,5 +1,7 @@
+//定義package名稱
 package com.example.express_nfc;
 
+//宣告class Converter(處理16進制轉碼)
 public class Converter {
     // Hex help
     private static final byte[] HEX_CHAR_TABLE = { (byte) '0', (byte) '1',
