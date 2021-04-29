@@ -3,7 +3,7 @@
  yuntech homework:node+express+mysql
 
 # 功能
-前後端分離完整行事曆系統-Express
+前後端分離NFC卡號日曆登記系統-Express
 
 ## Project install
 ```
