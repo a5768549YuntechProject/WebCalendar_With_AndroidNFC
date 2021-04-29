@@ -30,13 +30,11 @@ function renderTable(data) {
     cardTd.append(data["cardID"]);
     dateTd.append(formatSQLDateTimeAndTimeZone(data["Date"]));
     timesTd.append(data["times"]);
-    //totalTd.append(data["TotallyCount"]);
 
     mainTr.append(idTd);
     mainTr.append(cardTd);
     mainTr.append(dateTd);
     mainTr.append(timesTd);
-    //mainTr.append(totalTd);
 
     eventTable.append(mainTr);
 }

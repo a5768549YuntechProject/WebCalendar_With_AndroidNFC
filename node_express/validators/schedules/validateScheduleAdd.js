@@ -1,3 +1,4 @@
+//資料驗證器
 const { body } = require('express-validator');
 const rejectOnInvalid = require('../../middlewares/rejectOnInvalid');
 

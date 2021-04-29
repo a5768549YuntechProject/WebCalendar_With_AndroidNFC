@@ -5,6 +5,7 @@ const {
     lastSchedule,
     listSchedule,
 } = require("../services/schedules");
+//資料驗證器
 const validateScheduleAdd = require("../validators/schedules/validateScheduleAdd");
 
 /** 排程路由 */

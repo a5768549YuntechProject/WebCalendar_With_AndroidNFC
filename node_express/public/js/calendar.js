@@ -1,5 +1,8 @@
+//定義today變數為Date格式
 let today = new Date();
+//定義currentMonth變數為today的getMonth(取得月份)
 let currentMonth = today.getMonth();
+//定義currentYear變數為today的getFullYear(取得年分)
 let currentYear = today.getFullYear();
 /** 月份字串 */
 let months = [
@@ -17,22 +20,31 @@ let months = [
     "December",
 ];
 
+//定義table變數為id為tabapay_calendar的DOM
 let table = document.getElementById("tabapay_calendar");
+//定義header變數為id為calendar_header的DOM
 let header = document.getElementById("calendar_header");
+//定義modal變數為id為calendar_modal的DOM
 let modal = document.getElementById("calendar_modal");
+//定義span變數為class為close的第一個DOM
 let span = document.getElementsByClassName("close")[0];
+//定義modal_body變數為class為body的第一個DOM
 let modal_body = document.getElementsByClassName("modal-body")[0];
 
 /**
  * render上個月份的資料
  */
 function previous() {
-    document.getElementById("previous").style.color = "#ca3";
+    //若currentMonth等於0，就把currentYear減一，反之不更動
     currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    //若currentMonth等於0，就把currentMonth設為11，反之將currentMonth減一
     currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
 
+    //將id為calendar_header的DOM中的innerHTML(內容)設為當月英文名及日期
     document.getElementById("calendar_header").innerHTML = months[currentMonth] + " " + currentYear;
+    //在console印出月及年
     console.log([currentMonth, currentYear]);
+    //fetch後端並且render出日曆
     showCalendar(currentMonth, currentYear);
 }
 
@@ -40,20 +52,18 @@ function previous() {
  * render下個月份的資料
  */
 function next() {
-    document.getElementById("next").style.color = "#ca3";
+    //若currentMonth等於11，就把currentYear加一，反之不更動
     currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    //若currentMonth等於11，就把currentMonth設為0，反之將currentMonth加一
     currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
 
+    //將id為calendar_header的DOM中的innerHTML(內容)設為當月英文名及日期
     document.getElementById("calendar_header").innerHTML = months[currentMonth] + " " + currentYear;
+    //在console印出月及年
     console.log([currentMonth, currentYear]);
+    //fetch後端並且render出日曆
     showCalendar(currentMonth, currentYear);
 }
-
-window.onclick = (event) => {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
 
 /**
  * 檢查傳入日期是否為今日
@@ -67,81 +77,15 @@ function valiNowDate(year, month, date) {
 }
 
 /**
- * 計算兩個日期相差的天數
- * @param {string} start 開始日期
- * @param {string} end 結束日期
- * @returns 兩個日期相差的天數
- */
-function countDate(start, end) {
-    var d1 = new Date(start);
-    var d2 = new Date(end);
-    return (d2.getTime() - d1.getTime()) / (1000 * 3600 * 24);
-}
-
-/**
- * 將日期字串轉為日期數字陣列
- * @param {string} data YYYY-MM-DDThh:mm:ss.000Z
- * @returns {number[]} 日期數字陣列[年,月,日]
- */
-function formatDate(data) {
-    let _date = data.split("T")[0];
-    let year = parseInt(_date.split("-")[0]);
-    let month = parseInt(_date.split("-")[1]);
-    let date = parseInt(_date.split("-")[2]);
-    return [year, month, date];
-}
-
-/**
- * 將日期數字陣列轉為日期字串
- * @param {number[]} data
- * @returns YYYY-MM-DDThh:mm:ss.000Z
- */
-function formatStringDate(data) {
-    console.log(data)
-    let _data = data.map(String);
-    if (_data[1].length === 1) _data[1] = "0" + _data[1];
-    if (_data[2].length === 1) _data[2] = "0" + _data[2];
-
-    return _data[0] + "-" + _data[1] + "-" + _data[2] + "T00:00:00.000Z";
-}
-
-/**
- * 將輸入日期加一天
- * @param {number[]} data 數字陣列[年,月,日]
- * @returns {number[]} 數字陣列[年,月,日]
- */
-function plusDate(data) {
-    let _year = data[0];
-    let _month = data[1];
-    let _day = data[2];
-    //計算閏年
-    let maxDateArray = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    if ((!(_year % 4) && _year % 100) || !(_year % 400)) maxDateArray[1] = 29;
-
-    let maxDay = maxDateArray[_month - 1];
-
-    if (_day === maxDay && _month === 12) {
-        _year += 1;
-        _month = 1;
-        _day = 1;
-    } else if (_day === maxDay && _month !== 12) {
-        _month += 1;
-        _day = 1;
-    } else {
-        _day += 1;
-    }
-
-    return [_year, _month, _day];
-}
-
-/**
- * 列出時間事件清單並儲存於全域變數內
+ * 列出卡號清單並儲存於全域變數內
  * @param {String[]} data
  */
 function listEvent(data) {
+    //將卡號及日期綁定在同一字串
     data.forEach((element) => {
         list.push(element["Date"] + "#" + element["cardID"]);
     });
+    //在consloe印出list
     console.log(list);
 }
 
@@ -154,21 +98,34 @@ function listEvent(data) {
  * @returns YYYY-MM-DDThh:mm:ss.000Z#{event}
  */
 function putEvent(year, month, date, eventString) {
+    //將month加一(month從0開始)
     /** @type {any} */ (month) += 1;
+    //將eventString以#分割，並取得第二份(取得事件)
     let event = eventString.split("#")[1];
+    //將eventString以T分割，並取得第一份(取得年月日)
     let dateString = eventString.split("T")[0];
+    //將dateString以-分割，並取得第一份(取得年)
     let _year = dateString.split("-")[0];
+    //將dateString以-分割，並取得第二份(取得月)
     let _month = dateString.split("-")[1];
+    //將dateString以-分割，並取得第三份(取得日)
     let _date = dateString.split("-")[2];
+    //將年轉為字串格式
     year = year.toString();
+    //將月轉為字串格式
     month = month.toString();
+    //將日轉為字串格式
     date = date.toString();
+
+    //若month只有個位數，前面就補0
     if (month.length === 1) {
         month = "0" + month;
     }
+    //若date只有個位數，前面就補0
     if (date.length === 1) {
         date = "0" + date;
     }
+    //若傳入日期與現在處理一樣，就傳回事件，反之傳回空字串
     if (year === _year && month === _month && date === _date) {
         return event;
     } else {
@@ -177,97 +134,83 @@ function putEvent(year, month, date, eventString) {
 }
 
 /**
- * 畫出當週資料表格
- * @param {String} date 日期資料
- * @param {String} event 事件資料
- */
-function renderWeekTable(date, event) {
-    let eventTable = document.getElementById("weekEventTable");
-    let mainTr = document.createElement("tr");
-    let dateTd = document.createElement("td");
-    let eventTd = document.createElement("td");
-
-    dateTd.innerHTML = date;
-    eventTd.innerHTML = event;
-
-    mainTr.append(dateTd);
-    mainTr.append(eventTd);
-
-    eventTable.append(mainTr);
-}
-
-/**
- * 畫出當日資料表格
- * @param {String} date 日期資料
- * @param {String} event 事件資料
- */
-function renderTodayTable(date, event) {
-    let eventTable = document.getElementById("todayEventTable");
-    let mainTr = document.createElement("tr");
-    let dateTd = document.createElement("td");
-    let eventTd = document.createElement("td");
-
-    dateTd.innerHTML = date;
-    eventTd.innerHTML = event;
-
-    mainTr.append(dateTd);
-    mainTr.append(eventTd);
-
-    eventTable.append(mainTr);
-}
-
-/**
  * fetch後端並且render出日曆
  * @param {number} month
  * @param {number} year
  */
 function showCalendar(month, year) {
-
+    //取得當月的總日期
     let daysInMonth = 32 - new Date(year, month, 32).getDate();
+    //取得一個月第一個星期的日期
     let firstDayOfWeek = new Date(year, month).getDay();
+    //定義table_body變數為id為calendar_body的DOM
     let table_body = /**@type {any} */ (document.getElementById("calendar_body"));
+    //設定table_body的innerHTML(內容)為空字串
     table_body.innerHTML = "";
 
+    //若globalThis.data為空(全域變數內沒有之前取到值)
     if (globalThis.data === undefined || globalThis.data === null) {
+        //呼叫fetch做request，method為get，對象為API位置+api/schedule
         fetch(apiUrl + "api/schedules")
             .then((res) => {
                 return res.json();
             })
             .then((result) => {
+                //將資料儲存至globalThis.data(全域變數)
                 globalThis.data = result;
 
+                //呼叫listEvent
                 listEvent(globalThis.data);
 
+                //控制id為calendar_header的DOM的innerHTML(內容)為當月名稱及年份
                 document.getElementById("calendar_header").innerHTML = months[month] + " " + year;
+                //宣告變數date，初始值為1
                 let date = 1;
+                //宣告變數week，初始值為空陣列
                 let week = [];
+                //宣告變數weekEvent，初始值為空陣列
                 let weekEvent = [];
+                //雙重迴圈，處理印出日曆
                 for (let i = 0; i < 6; i++) {
+                    //宣告變數row，初始值為table_body的DOM的insertRow(處理列)
                     let row = table_body.insertRow(i);
                     for (let j = 0; j < 7; j++) {
+                        //宣告變數cell，初始值為row的DOM的insertCell(處理行)
                         let cell = row.insertCell(j);
+                        //若當行當列沒有日期，cell的innerHTML(內容)為空字串
                         if (i === 0 && j < firstDayOfWeek) {
                             cell.innerHTML = "";
+                            //若日期大於總天數則跳過迴圈
                         } else if (date > daysInMonth) {
                             break;
+                            //正常日期塞入字串
                         } else {
+                            //判斷日期是否為今天，是的話加上css current_date
                             if (valiNowDate(year, month, date)) {
                                 cell.classList.add("current_date");
                             }
 
+                            //定義變數event，初始值為空字串
                             let event = "";
 
+                            //將list逐一交給putEvent檢查，檢查通過的寫入event
                             list.forEach((element) => {
                                 if (putEvent(year, month, date, element) !== "") {
                                     event += putEvent(year, month, date, element) + "<br/>";
                                 }
                             });
 
+                            //將date放入week陣列
                             week.push(date);
+                            //將event放入weekEvent陣列
                             weekEvent.push(event);
+                            //在console印出event
                             console.log(event);
+                            //將處理日的innerHTML(內容)設為日期加event
                             cell.innerHTML = "" + date + "<br/><br/>" + event;
+                            //將處理日的id設為date
                             cell.id = date;
+                            //date加一
                             date++;
                         }
                     }
@@ -307,4 +250,5 @@ function showCalendar(month, year) {
     }
 }
 
+//初始化畫面
 showCalendar(currentMonth, currentYear);
