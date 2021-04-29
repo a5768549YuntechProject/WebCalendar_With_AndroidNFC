@@ -1,3 +1,10 @@
+// 此插件支援以下功能(類Vue、類React的輕量功能)：
+// 1.data-route：設定前端的route功能，可以使用html的a標籤或者js的導向功能直接進行導向
+// 2.data-static：將此檔案做static，做static的檔案在換頁時不會做更動，可利用此功能製作全域設定
+// 3.globalThis變數：此變數儲存已載入畫面的所有資訊，且可自由新增新變數塞入此變數中，該變數亦可變為全域變數
+// 注意事項：使用此檔案時，必需使檔案本身為data-static，否則資料將會出錯
+// data-route與a標籤、form標籤做綁定，使用時路徑必須與data-route的用法一樣
+// 此插件為測試版，有些許BUG
 (function() {
     /** @type {Record<string, Page>} */
     const pages = {};
