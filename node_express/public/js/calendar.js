@@ -144,6 +144,7 @@ function showCalendar(month, year) {
     //取得一個月第一個星期的日期
     let firstDayOfWeek = new Date(year, month).getDay();
     //定義table_body變數為id為calendar_body的DOM
+    //TODO:改善type問題
     let table_body = /**@type {any} */ (document.getElementById("calendar_body"));
     //設定table_body的innerHTML(內容)為空字串
     table_body.innerHTML = "";
@@ -217,32 +218,47 @@ function showCalendar(month, year) {
                 }
             });
     } else {
+        //控制id為calendar_header的DOM的innerHTML(內容)為當月名稱及年份
         document.getElementById("calendar_header").innerHTML = months[month] + " " + year;
+        //宣告變數date，初始值為1
         let date = 1;
+        //雙重迴圈，處理印出日曆
         for (let i = 0; i < 6; i++) {
+            //宣告變數row，初始值為table_body的DOM的insertRow(處理列)
             let row = table_body.insertRow(i);
             for (let j = 0; j < 7; j++) {
+                //宣告變數cell，初始值為row的DOM的insertCell(處理行)
                 let cell = row.insertCell(j);
                 if (i === 0 && j < firstDayOfWeek) {
+                    //若當行當列沒有日期，cell的innerHTML(內容)為空字串
                     cell.innerHTML = "";
+                    //若日期大於總天數則跳過迴圈
                 } else if (date > daysInMonth) {
                     break;
+                    //正常日期塞入字串
                 } else {
+                    //判斷日期是否為今天，是的話加上css current_date
                     if (valiNowDate(year, month, date)) {
                         cell.classList.add("current_date");
                     }
 
+                    //定義變數event，初始值為空字串
                     let event = "";
 
+                    //將list逐一交給putEvent檢查，檢查通過的寫入event
                     list.forEach((element) => {
                         if (putEvent(year, month, date, element) !== "") {
                             event += putEvent(year, month, date, element) + "<br/>";
                         }
                     });
 
+                    //在console印出event
                     console.log(event);
+                    //將處理日的innerHTML(內容)設為日期加event
                     cell.innerHTML = "" + date + "<br/><br/>" + event;
+                    //將處理日的id設為date
                     cell.id = date;
+                    //date加一
                     date++;
                 }
             }
